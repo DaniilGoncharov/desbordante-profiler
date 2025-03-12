@@ -1,0 +1,39 @@
+name: "full_analysis"
+global_settings:
+
+tasks:
+
+  - family: "fd"
+    timeout: 15
+
+  - family: "afd"
+    parameters:
+      error: 0.1
+    timeout: 15
+
+  - family: "cfd"
+    parameters:
+      cfd_max_lhs: 3
+      cfd_minsup: 8
+      cfd_minconf: 0.7
+    timeout: 15
+
+  - family: "ind"
+    timeout: 15
+
+  - family: "ucc"
+    timeout: 15
+
+  - family: "od"
+    timeout: 15
+
+  - algorithm: "order"
+    timeout: 15
+
+  - family: "dd"
+    timeout: 15
+
+  - family: "ar"
+    parameters:
+      input_format: 'tabular'
+    timeout: 75

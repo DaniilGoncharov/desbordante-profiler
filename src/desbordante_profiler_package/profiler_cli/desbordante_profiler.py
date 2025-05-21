@@ -65,5 +65,73 @@ def run_profile(profile_path: str, data_path: str, delimiter: str, has_header: b
                            history_storage=history_storage)
 
 
+@cli.group("compare", help="Compare primitives sets produced by two datasets / versions")
+def compare():
+    pass
+
+@compare.command("subset", help="Diff primitives between SUBSET and TARGET where SUBSET ⊆ TARGET")
+@click.option("--target", "target_path", type=click.Path(exists=True, readable=True), required=True,
+              help="Path to CSV for the bigger dataset")
+@click.option("--subset", "subset_path", type=click.Path(exists=True, readable=True), required=True,
+              help="Path to CSV for the smaller dataset")
+@click.option("--profile", "profile_path", type=click.Path(exists=True, readable=True), required=True,
+              help="Path to YAML profile file")
+@click.option("--delimiter", default=",", help="Delimiter if TARGET is CSV")
+@click.option("--has_header", default=True, show_default=True)
+@click.option("--skip_results_check", is_flag=True, help="Skip searching for already stored .pkl results")
+@click.option("--log_level", default="INFO", show_default=True)
+@click.option("--mem_limit", type=click.IntRange(min=1),
+              help="Maximum memory (in MB) that is allowed to use.")
+@click.option("--workers", type=click.IntRange(min=0), default=0, show_default=True,
+              help="Number of CPU cores to use. Use 0 for maximum available.")
+def subset_compare(target_path, subset_path, delimiter: str, has_header, profile_path,
+                   skip_results_check: bool, log_level, mem_limit, workers):
+    configure_core_logger()
+    add_console_handler(log_level)
+    history_storage = HistoryStorage()
+    workers = get_correct_number_of_workers(workers)
+    mem_limit_bytes = get_correct_bytes_mem_limit(mem_limit)
+    compare_with_subset(profile_path=profile_path,
+                        target_path=target_path,
+                        subset_path=subset_path,
+                        delimiter=delimiter,
+                        has_header=has_header,
+                        check_results=not skip_results_check,
+                        mem_limit_bytes=mem_limit_bytes,
+                        workers=workers,
+                        history_storage=history_storage)
+
+@compare.command("version", help="Diff primitives between INITIAL and TARGET releases of same dataset")
+@click.option("--target", "target_path", type=click.Path(exists=True, readable=True), required=True,
+              help="Path to CSV for the target dataset")
+@click.option("--initial", "initial_path", type=click.Path(exists=True, readable=True), required=True,
+              help="Path to CSV for the initial dataset")
+@click.option("--profile", "profile_path", type=click.Path(exists=True, readable=True), required=True,
+              help="Path to YAML profile file")
+@click.option("--delimiter", default=",", help="Delimiter if TARGET is CSV")
+@click.option("--has_header", default=True, show_default=True)
+@click.option("--skip_results_check", is_flag=True, help="Skip searching for already stored .pkl results")
+@click.option("--log_level", default="INFO", show_default=True)
+@click.option("--mem_limit", type=click.IntRange(min=1),
+              help="Maximum memory (in MB) that is allowed to use.")
+@click.option("--workers", type=click.IntRange(min=0), default=0, show_default=True,
+              help="Number of CPU cores to use. Use 0 for maximum available.")
+def version_compare(target_path, initial_path, delimiter: str, has_header, profile_path,
+                    skip_results_check: bool, log_level, mem_limit, workers):
+    configure_core_logger()
+    add_console_handler(log_level)
+    history_storage = HistoryStorage()
+    workers = get_correct_number_of_workers(workers)
+    mem_limit_bytes = get_correct_bytes_mem_limit(mem_limit)
+    compare_with_new_version(profile_path=profile_path,
+                             target_path=target_path,
+                             initial_path=initial_path,
+                             delimiter=delimiter,
+                             has_header=has_header,
+                             check_results=not skip_results_check,
+                             mem_limit_bytes=mem_limit_bytes,
+                             workers=workers,
+                             history_storage=history_storage)
+
 if __name__ == "__main__":
     cli()

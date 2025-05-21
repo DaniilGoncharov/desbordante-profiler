@@ -122,5 +122,3 @@ class RulesAction(StrEnum):
 class RulesRetryParameter(StrEnum):
     new_timeout = auto()
     new_dataframe = auto()
-    
-# rules

@@ -81,9 +81,3 @@ def load_profile(profile_path: Path) -> Profile:
     profile = Profile(name=name, tasks=tasks, global_settings=global_settings)
     logger.info(f"Profile loaded: {name}")
     return profile
-
-
-
-
-
-

@@ -213,8 +213,3 @@ class CoreManager:
             return None
 
         return ser_file
-
-
-
-
-

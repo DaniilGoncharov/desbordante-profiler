@@ -1,0 +1,90 @@
+name: "deep_profile"
+global_settings:
+  global_timeout:
+  rows: 100000
+  columns: 25
+tasks:
+  - family: "dd"
+
+  - family: "md"
+    parameters:
+      level_definition: "lattice"
+      max_cardinality: 4
+      prune_nondisjoint: false
+
+  - family: "nar"
+    parameters:
+      population_size: 1000
+      max_fitness_evaluations: 3000
+      minsup: 0.02
+      minconf: 0.60
+      crossover_probability: 0.80
+      differential_scale: 1.00
+
+  - family: "dc"
+    parameters:
+      evidence_threshold: 0
+      shard_length: 0
+      allow_cross_columns: true
+      minimum_shared_value: 0.20
+      comparable_threshold: 0.02
+
+  - family: "ar"
+    parameters:
+      input_format: 'tabular'
+      has_tid: true
+      minsup: 0.20
+      minconf: 0.50
+      tid_column_index: 0
+      item_column_index: 1
+
+  - family: "ac"
+    parameters:
+      ac_seed: 0
+      bumps_limit: 0
+      p_fuzz: 0.80
+      fuzziness: 0.10
+      weight: 0.05
+      bin_operation: "-"
+      iterations_limit: 10
+
+  - family: "cfd"
+    parameters:
+      cfd_minsup: 2
+      cfd_minconf: 0.60
+      cfd_max_lhs: 4
+      cfd_substrategy: "bfs"
+
+  - family: "sfd"
+    parameters:
+      only_sfd: false
+      min_cardinality: 0.02
+      min_sfd_strength: 0.10
+      max_lhs: 4
+      max_false_positive_probability: 0.10
+      delta: 0.05
+      min_skew_threshold: 0.30
+      min_structural_zeroes_amount: 0.10
+      max_amount_of_categories: 200
+      max_different_values_proportion: 0.99
+
+  - family: "afd"
+    parameters:
+      max_lhs: 4
+      error: 0.01
+
+  - family: "fd"
+    parameters:
+      max_lhs: 4
+
+  - family: "ind"
+
+  - family: "ucc"
+
+  - family: "aucc"
+    parameters:
+      error: 0.01
+
+  - family: "od"
+
+  - algorithm: "order"

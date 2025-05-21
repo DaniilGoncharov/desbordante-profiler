@@ -1,0 +1,12 @@
+{# comparing_digest_template.md.j2 #}
+# Datasets comparing Digest
+
+**Subset:** `{{ baseline }}`
+**Target:** `{{ target }}`
+**Run Directory:** `{{ run_dir }}`
+
+| Primitive | Algorithm | Parameters | Subset | Target | Comparison result |
+|:---------:|:----------|:----------:|:------:|:------:|:-----------------:|
+{% for run in runs %}
+| {{ run.algorithm_family | default('N/A') }} | {{ run.algorithm | default('N/A') }} | `{{ run.params | default({}) }}` | `{{ run.baseline_instances | default('N/A') }}` | `{{ run.target_instances | default('N/A') }}` | {{ run.comparison | default('N/A') }} |
+{% endfor %}

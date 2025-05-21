@@ -1,0 +1,12 @@
+{# profiling_digest_template.md.j2 #}
+# Data Profiling Digest
+
+**Dataset:** `{{ baseline }}`
+**Run Directory:** `{{ run_dir }}`
+**Total Tasks Executed:** `{{ runs | length }}`
+
+| Algorithm | Parameters | Rows | Columns | Time(s) | Result | Instances | ErrorType | Decision |
+|:----------|:----------:|:----:|:-------:|--------:|:------:|:---------:|----------:|---------:|
+{% for run in runs %}
+| {{ run.algorithm | default('N/A') }} | `{{ run.params | default({}) }}` | {{ run.rows | default('N/A') }} | {{ run.cols | default('N/A') }} | {{ run.execution_time | default(0) | round(4) }} | {{ run.result | default('Unknown') }} | {{ run.instances | default('N/A') }} | {{ run.error_type | default('N/A') }} | {{ run.rules_decision | default('N/A') }}|
+{% endfor %}
